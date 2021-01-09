@@ -85,12 +85,12 @@ class COVIDDataset(data.Dataset):
 
     def resize(self, img, gt):
         w, h = img.size
-        if h < self.trainsize or w < self.trainsize:
-            h = max(h, self.trainsize)
-            w = max(w, self.trainsize)
-            return img.resize((w, h), Image.BILINEAR), gt.resize((w, h), Image.NEAREST)
-        else:
-            return img, gt.resize((w, h), Image.NEAREST)
+        #if h < self.trainsize or w < self.trainsize:
+           # h = max(h, self.trainsize)
+           # w = max(w, self.trainsize)
+           # return img.resize((w, h), Image.BILINEAR), gt.resize((w, h), Image.NEAREST)
+        # else:
+        return img, gt.resize((w, h), Image.NEAREST)
 
     def __len__(self):
         return self.size
