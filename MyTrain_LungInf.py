@@ -153,10 +153,13 @@ if __name__ == '__main__':
 
     # weights file save path
     if opt.is_pseudo and (not opt.is_semi):
+        print("Inf-Net_Pseudo")
         train_save = 'Inf-Net_Pseudo'
     elif (not opt.is_pseudo) and opt.is_semi:
+        print("Semi-Inf-Net")
         train_save = 'Semi-Inf-Net'
     elif (not opt.is_pseudo) and (not opt.is_semi):
+        print("Inf-Net")
         train_save = 'Inf-Net'
     else:
         print('Use custom save path')

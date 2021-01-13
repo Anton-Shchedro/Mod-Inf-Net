@@ -269,6 +269,7 @@ if __name__ == '__main__':
         previus = os.listdir(test_aux_dir)
 
     # move img/pseudo-label into `./Dataset/TrainingSet/LungInfection-Train/Pseudo-label`
+    # from semi = './Dataset/ChineseAsPseudo/ChinaSet_AllFiles/DataPrepare/Hybrid-label'
     shutil.copytree(semi_img, './Dataset/ChineseAsPseudo/ChinaSet_AllFiles/Pseudo/Imgs')
     shutil.copytree(semi_mask, './Dataset/ChineseAsPseudo/ChinaSet_AllFiles/Pseudo/GT')
     shutil.copytree(semi_edge, './Dataset/ChineseAsPseudo/ChinaSet_AllFiles/Pseudo/Edge')

@@ -58,17 +58,35 @@ class COVIDDataset(data.Dataset):
         assert len(self.images) == len(self.gts)
         images = []
         gts = []
-        for img_path, gt_path in zip(self.images, self.gts):
-            img = Image.open(img_path)
-            gt = Image.open(gt_path)
-            if img.size == gt.size:
-                images.append(img_path)
-                gts.append(gt_path)
-            else:
-                img, gt = self.resize(img,gt)
-                gt.save(gt_path)
-                images.append(img_path)
-                gts.append(gt_path)
+        if not self.edge_flage:
+            for img_path, gt_path in zip(self.images, self.gts):
+                img = Image.open(img_path)
+                gt = Image.open(gt_path)
+                if img.size == gt.size:
+                    images.append(img_path)
+                    gts.append(gt_path)
+                else:
+                    img, gt = self.resize(img,gt)
+                    gt.save(gt_path)
+                    images.append(img_path)
+                    gts.append(gt_path)
+        else:
+            edges = []
+            for img_path, gt_path, edge_path in zip(self.images, self.gts, self.edges):
+                img = Image.open(img_path)
+                gt = Image.open(gt_path)
+                edge = Image.open(edge_path)
+                if img.size == gt.size:
+                    images.append(img_path)
+                    gts.append(gt_path)
+                    edges.append(edge_path)
+                else:
+                    img, gt, edge = self.resizeEdge(img,gt,edge)
+                    gt.save(gt_path)
+                    edge.save(edge_path)
+                    images.append(img_path)
+                    gts.append(gt_path)
+                    edges.append(edge_path)
         self.images = images
         self.gts = gts
 
@@ -91,6 +109,15 @@ class COVIDDataset(data.Dataset):
            # return img.resize((w, h), Image.BILINEAR), gt.resize((w, h), Image.NEAREST)
         # else:
         return img, gt.resize((w, h), Image.NEAREST)
+
+    def resizeEdge(self, img, gt, edge):
+        w, h = img.size
+        #if h < self.trainsize or w < self.trainsize:
+           # h = max(h, self.trainsize)
+           # w = max(w, self.trainsize)
+           # return img.resize((w, h), Image.BILINEAR), gt.resize((w, h), Image.NEAREST)
+        # else:
+        return img, gt.resize((w, h), Image.NEAREST), edge.resize((w, h), Image.NEAREST)
 
     def __len__(self):
         return self.size

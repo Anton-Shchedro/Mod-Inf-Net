@@ -56,8 +56,8 @@ def inference():
         # res = F.upsample(res, size=(ori_size[1],ori_size[0]), mode='bilinear', align_corners=False)
         res = res.sigmoid().data.cpu().numpy().squeeze()
         res = (res - res.min()) / (res.max() - res.min() + 1e-8)
-        res = np.where(res == np.max(res), True, False)
-        #res = np.invert(res)
+        res = np.where(res < np.max(res) / 2, True, False)
+        res = np.invert(res)
         imsave(opt.save_path + name, res)
 
     print('Test Done!')
