@@ -1,16 +1,5 @@
-# -*- coding: utf-8 -*-
-
-"""Preview
-Code for 'Inf-Net: Automatic COVID-19 Lung Infection Segmentation from CT Scans'
-submit to Transactions on Medical Imaging, 2020.
-
-First Version: Created on 2020-05-13 (@author: Ge-Peng Ji)
-"""
-
-import numpy as np
 import os
 import argparse
-from PIL import Image
 import cv2
 
 
@@ -20,11 +9,7 @@ def inference():
                         help='Path to test data')
     opt = parser.parse_args()
 
-    print("#" * 20, "\nStart Testing (Inf-Net)\n{}\nThis code is written for 'Inf-Net: Automatic COVID-19 Lung "
-                    "Infection Segmentation from CT Scans', 2020, arXiv.\n"
-                    "----\nPlease cite the paper if you use this code and dataset. "
-                    "And any questions feel free to contact me "
-                    "via E-mail (gepengai.ji@gamil.com)\n----\n".format(opt), "#" * 20)
+    print("#" * 20, "\nStart Testing (Inf-Net)\n{}\n".format(opt), "#" * 20)
 
 
     gt_root = '{}/GT/'.format(opt.data_path)

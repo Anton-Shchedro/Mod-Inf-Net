@@ -1,13 +1,3 @@
-# -*- coding: utf-8 -*-
-
-"""Preview
-Code for 'Inf-Net: Automatic COVID-19 Lung Infection Segmentation from CT Scans'
-submit to Transactions on Medical Imaging, 2020.
-
-1st Version: Created on 2020-05-13 (@author: Ge-Peng Ji)
-2nd Version: Fix some bugs caused by THOP on 2020-06-10 (@author: Ge-Peng Ji)
-"""
-
 import torch
 from torch.autograd import Variable
 import os
@@ -214,11 +204,7 @@ if __name__ == '__main__':
 
 
     # ---- start !! -----
-    print("#"*20, "\nStart Training (Inf-Net-{})\n{}\nThis code is written for 'Inf-Net: Automatic COVID-19 Lung "
-                  "Infection Segmentation from CT Scans', 2020, arXiv.\n"
-                  "----\nPlease cite the paper if you use this code and dataset. "
-                  "And any questions feel free to contact me "
-                  "via E-mail (gepengai.ji@163.com)\n----\n".format(opt.backbone, opt), "#"*20)
+    print("#"*20, "\nStart Training (Inf-Net-{})\n{}\n".format(opt.backbone, opt), "#"*20)
 
     for epoch in range(1, opt.epoch):
         adjust_lr(optimizer, opt.lr, epoch, opt.decay_rate, opt.decay_epoch)

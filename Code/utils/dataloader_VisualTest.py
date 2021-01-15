@@ -1,6 +1,5 @@
 import os
 from PIL import Image
-import torch.utils.data as data
 import cv2
 import numpy as np
 from skimage.morphology import reconstruction
