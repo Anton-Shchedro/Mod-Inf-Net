@@ -6,6 +6,7 @@ from Code.model_lung_infection.InfNet_Res2Net import Inf_Net as Network
 from Code.utils.dataloader_LungInf import test_dataset
 from matplotlib.pyplot import imsave
 
+# Used as MyTest..., but with threshold and only Res2Net as backbone
 
 def inference():
     parser = argparse.ArgumentParser()

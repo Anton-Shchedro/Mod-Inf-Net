@@ -5,6 +5,7 @@ from Code.utils.dataloader_VisualTest import test_dataset
 from matplotlib.pyplot import imsave
 import cv2
 
+# Used to apply edge mask (or if exists only GT, first creates edge mask) on RX image
 
 def inference():
     parser = argparse.ArgumentParser()

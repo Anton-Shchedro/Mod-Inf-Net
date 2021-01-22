@@ -3,6 +3,7 @@ import os
 import argparse
 import cv2
 
+# Used for deleting extra zones from resulting or intermediate GT images.
 
 def inference():
     parser = argparse.ArgumentParser()

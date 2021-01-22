@@ -140,13 +140,19 @@ def inference_module(_data_path, _save_path, _pth_path):
     model.eval()
 
     os.makedirs(_save_path, exist_ok=True)
-    # FIXME
     image_root = '{}/'.format(_data_path)
     # gt_root = '{}/GT/'.format(_data_path)
     test_loader = test_dataset(image_root, 352)
+    # initially test_loader = test_dataset(image_root, image_root, 352)
+    # but test_dataset class from Code.utils.dataloader_LungInf have folloving:
+    # def __init__(self, image_root, testsize) ...
+    # because self doesn't have to be in input, one image_root is need to be removed.
 
     for i in range(test_loader.size):
-        #image, gt, name = test_loader.load_data()
+        # initially image, gt, name = test_loader.load_data()
+        # but load_data() function of class test_dataset have following: return image, name
+        # this error have makes no possible to find shape from gt, so we find shape from image.
+        # this is made truth sh = image.shape[2:4]
         image, name = test_loader.load_data()
         image = image.cuda()
 
@@ -159,6 +165,8 @@ def inference_module(_data_path, _save_path, _pth_path):
         res = res.sigmoid().data.cpu().numpy().squeeze()
         res = (res - res.min()) / (res.max() - res.min() + 1e-8)
 
+        # GT map is binary image, so we need threshold. 0.5 was chosen and because some resulting images need
+        # lower threshold, and some need higher, 0.5 good enough.
         res = np.where(res < np.max(res) / 2, True, False)
 
         imsave(_save_path + '/' + name, res, cmap='binary')
@@ -270,6 +278,10 @@ if __name__ == '__main__':
 
     # move img/pseudo-label into `./Dataset/TrainingSet/LungInfection-Train/Pseudo-label`
     # from semi = './Dataset/ChineseAsPseudo/ChinaSet_AllFiles/DataPrepare/Hybrid-label'
+    #
+    # can fail if folder Pseudo already exists.
+    # Needs modifying following code to add save location from command input
+
     shutil.copytree(semi_img, './Dataset/ChineseAsPseudo/ChinaSet_AllFiles/Pseudo/Imgs')
     shutil.copytree(semi_mask, './Dataset/ChineseAsPseudo/ChinaSet_AllFiles/Pseudo/GT')
     shutil.copytree(semi_edge, './Dataset/ChineseAsPseudo/ChinaSet_AllFiles/Pseudo/Edge')

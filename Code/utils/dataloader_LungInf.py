@@ -29,7 +29,7 @@ class COVIDDataset(data.Dataset):
         else:
             self.edge_flage = False
 
-        self.filter_files()
+        self.filter_files() # modifyed this function
         self.size = len(self.images)
 
         self.img_transform = transforms.Compose([
@@ -53,6 +53,27 @@ class COVIDDataset(data.Dataset):
             return image, gt, edge
         else:
             return image, gt
+
+    '''
+    originally:
+    def filter_files(self):
+        assert len(self.images) == len(self.gts)
+        images = []
+        gts = []
+        for img_path, gt_path in zip(self.images, self.gts):
+            img = Image.open(img_path)
+            gt = Image.open(gt_path)
+            if img.size == gt.size:
+                images.append(img_path)
+                gts.append(gt_path)
+        self.images = images
+        self.gts = gts
+        
+        
+    in modified version when img.size == gt.size False
+    gt is resized up to size of img
+    in case when edge exist, edge is also resized
+    '''
 
     def filter_files(self):
         assert len(self.images) == len(self.gts)
@@ -103,6 +124,7 @@ class COVIDDataset(data.Dataset):
 
     def resize(self, img, gt):
         w, h = img.size
+        # train size is most times significantly lower then img size, so following code doesn't necessary.
         #if h < self.trainsize or w < self.trainsize:
            # h = max(h, self.trainsize)
            # w = max(w, self.trainsize)
@@ -111,6 +133,7 @@ class COVIDDataset(data.Dataset):
         return img, gt.resize((w, h), Image.NEAREST)
 
     def resizeEdge(self, img, gt, edge):
+        # little modification of resize function in case when edge exists.
         w, h = img.size
         #if h < self.trainsize or w < self.trainsize:
            # h = max(h, self.trainsize)
@@ -300,6 +323,7 @@ class test_dataset:
             return img.convert('L')
 
 class dice_test_dataset:
+    # used in MyDiceAndIOU and MyTDice
     def __init__(self, image_root, gt_root, testsize):
         self.testsize = testsize
         self.images = [image_root + f for f in os.listdir(image_root) if f.endswith('.jpg') or f.endswith('.png')]

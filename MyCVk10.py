@@ -1,4 +1,3 @@
-
 import torch
 from torch.autograd import Variable
 import os
@@ -10,6 +9,7 @@ from Code.utils.utils import clip_gradient, adjust_lr, AvgMeter
 import torch.nn.functional as F
 from matplotlib.pyplot import imsave
 
+# need it?
 
 def joint_loss(pred, mask):
     weit = 1 + 5*torch.abs(F.avg_pool2d(mask, kernel_size=31, stride=1, padding=15) - mask)

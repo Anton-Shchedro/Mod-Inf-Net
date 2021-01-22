@@ -10,6 +10,8 @@ from Code.utils.utils import clip_gradient, adjust_lr, AvgMeter
 import torch.nn.functional as F
 from matplotlib.pyplot import imsave
 
+# Used for Inf-Net and Semi-Inf-Net, and immediate after calculate Dice and IOU and save the result in text file.
+# (without holes filling and elimination of extra zones)
 
 def iou(pred,mask):
     inter = np.logical_and(pred,mask)

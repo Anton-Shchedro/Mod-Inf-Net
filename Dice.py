@@ -4,6 +4,8 @@ import argparse
 import cv2
 
 
+# Used to calculate Dice and IOU coefficient between two sets of existing images and save results to text File.
+
 def iou(pred,mask):
     inter = np.logical_and(pred,mask)
     union = np.logical_or(pred,mask)

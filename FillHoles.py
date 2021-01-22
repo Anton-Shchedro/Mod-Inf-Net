@@ -1,6 +1,7 @@
 import argparse
 from Code.utils.dataloader_VisualTest import fill_holes
 
+# Used for holes filling of resulting or intermediate GT images.
 
 def inference():
     parser = argparse.ArgumentParser()

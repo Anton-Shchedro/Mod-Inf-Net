@@ -6,6 +6,7 @@ from Code.model_lung_infection.InfNet_Res2Net import Inf_Net as Network
 from Code.utils.dataloader_LungInf import dice_test_dataset
 from matplotlib.pyplot import imsave
 
+# Used as MyTBin, but immediate after calculate Dice and IOU and save the result in text file.
 
 def iou(pred,mask):
     inter = np.logical_and(pred,mask)

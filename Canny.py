@@ -2,6 +2,7 @@ import os
 import argparse
 import cv2
 
+# used to make edge when creating GT image and need work with edges of that GT
 
 def inference():
     parser = argparse.ArgumentParser()
