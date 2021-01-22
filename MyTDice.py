@@ -67,7 +67,7 @@ def inference():
 
         res = np.where(res < np.max(res)/2, True, False)
         res = np.invert(res)
-        imsave(opt.save_path + name, res)
+        imsave(opt.save_path + name, res, cmap = 'gray')
 
         iouC = iou(res, gt)
         diceC = dice(res, gt)

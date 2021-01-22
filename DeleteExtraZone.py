@@ -6,7 +6,7 @@ import cv2
 
 def inference():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data_path', type=str, default='./Results/LungSegmentation/NewPseudo/MontFill',
+    parser.add_argument('--data_path', type=str, default='./Results/LungSegmentation/Inf_Net_Final/Inf_and_Semi_Fill',
                         help='Path to test data')
     opt = parser.parse_args()
 
@@ -54,7 +54,6 @@ def inference():
         cv2.imwrite(gt_path, image)
 
     print("end fill")
-
 
 if __name__ == "__main__":
     inference()

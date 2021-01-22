@@ -19,7 +19,7 @@ def inference():
     parser.add_argument('--data_path', type=str, default='./Results/LungSegmentation/NewFillPseudo/MontFill',
                         help='Path to test data')
     parser.add_argument('--referance', type=str, default='./Dataset/ChineseAsPseudo/Montgomery/Test',
-                        help='Path to test data')
+                        help='Path to referance data')
     opt = parser.parse_args()
     gt_root = '{}/'.format(opt.data_path)
     ref_root = '{}/GT/'.format(opt.referance)
