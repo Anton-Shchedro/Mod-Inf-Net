@@ -103,29 +103,3 @@ class test_dataset:
                     gts.append(gt_path)
             self.images = images
             self.gts = gts
-
-
-class fill_holes:
-
-    def __init__(self, gt_root):
-        self.gts = [gt_root + f for f in os.listdir(gt_root) if f.endswith('.jpg') or f.endswith('.png')]
-        self.gts = sorted(self.gts)
-        self.fill()
-
-    def fill(self):
-        gts = []
-        for gt_path in self.gts:
-            # https://www.learnopencv.com/filling-holes-in-an-image-using-opencv-python-c/
-            gt = cv2.imread(gt_path, cv2.IMREAD_GRAYSCALE);
-
-            seed = np.copy(gt)
-            seed[1:-1, 1:-1] = gt.max()
-            mask = gt
-
-            img_fill_holes = reconstruction(seed, mask, method='erosion')
-
-            new_p = Image.fromarray(img_fill_holes)
-            new_p = new_p.convert("L")
-            new_p.save(gt_path)
-            gts.append(gt_path)
-        self.gts = gts
