@@ -46,6 +46,14 @@ def inference():
         res = np.array(image)
         #res = cv2.merge((image,image,image))
         #cv2.cvtColor(image, res, cv2.COLOR_GRAY2RGB)  # creat RGB image from grayscale
+
+# dilation_shape:  cv2.MORPH_RECT  cv2.MORPH_CROSS cv2.MORPH_ELLIPSE
+        dilation_shape = cv2.MORPH_ELLIPSE
+        dilation_size = 3
+        element = cv2.getStructuringElement(dilation_shape, (2 * dilation_size + 1, 2 * dilation_size + 1),
+                                           (dilation_size, dilation_size))
+        mark = cv2.dilate(mark, element)
+
         res[mark == 255,:] = [255, 0, 0]  # turn edges to red
 
         imsave(opt.save_path + name, res)

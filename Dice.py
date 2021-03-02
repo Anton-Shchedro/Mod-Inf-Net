@@ -20,11 +20,11 @@ def inference():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, default='./Results/LungSegmentation/NewFillPseudo/MontFill',
                         help='Path to test data')
-    parser.add_argument('--referance', type=str, default='./Dataset/ChineseAsPseudo/Montgomery/Test',
-                        help='Path to referance data')
+    parser.add_argument('--reference', type=str, default='./Dataset/ChineseAsPseudo/Montgomery/Test',
+                        help='Path to reference data')
     opt = parser.parse_args()
     gt_root = '{}/'.format(opt.data_path)
-    ref_root = '{}/GT/'.format(opt.referance)
+    ref_root = '{}/GT/'.format(opt.reference)
 
     gts = [gt_root + f for f in os.listdir(gt_root) if f.endswith('.jpg') or f.endswith('.png')]
     gts = sorted(gts)
