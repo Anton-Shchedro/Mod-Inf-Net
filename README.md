@@ -1,3 +1,5 @@
+This code is a modification of Inf-Net by [Deng-Ping Fan][inf]
+
 # Usage 
 
 This project is made in the form of several scripts, and in order to use different parts of this project, you need to run the scripts separately.
@@ -125,3 +127,6 @@ To create visual mask run VisualMark.py with following parameters:
 - --data_path is path to images. This folder should contain an "Imgs" folder with images, a "GT" folder with GT images, and optionally an "Edge" folder if edge images exist.
 - --save_path is path where results will be saved.
 - --is_edge by default False. Use True if edge images exists.
+
+
+[inf]: <https://github.com/DengPingFan/Inf-Net>
