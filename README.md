@@ -1,8 +1,8 @@
-Usage
+## Usage 
 
 This project is made in the form of several scripts, and in order to use different parts of this project, you need to run the scripts separately.
 
-Environment (Prerequisites)
+# Environment (Prerequisites)
 
 Inf-Net use environments with CUDA-10.0. It may work with other environment, but is not guarantee.
 
@@ -14,32 +14,29 @@ Installing THOP for counting the FLOPs/Params of model (of necessity).
 
 Some required packages may fail during installation, in which case the user have to find a workaround to install the missing packages.
 
-Training Inf-Net
+# Training Inf-Net
 
 Different backbones can be used to train Inf-Net, but only Res2Net was used in this project, and the correct operation of other backbones is not guaranteed.
 
-To train Inf-Net use {MyTrain\_LungInf.py} \cite{Inf-Net} with the following parameters:
+To train Inf-Net use MyTrain_LungInf.py with the following parameters:
 
-\begin{itemize}
-    \item --train\_path is path to training dataset. This folder should contain an "Imgs" folder with images, a "GT" folder with GT images, and an "Edge" folder with edge images.
-    \item --is\_semi for Inf-Net has to be set to False.
-    \item --is\_pseudo for Inf-Net has to be set to False.
-\end{itemize}
+- --train_path is path to training dataset. This folder should contain an "Imgs" folder with images, a "GT" folder with GT images, and an "Edge" folder with edge images.
+- --is_semi for Inf-Net has to be set to False.
+- --is_pseudo for Inf-Net has to be set to False.
 
 Following parameters are optional to change:
 
-\begin{itemize}
-    \item --backbone change different backbone. Possible choice: VGGNet16, ResNet50, Res2Net50. By default is Res2Net50
-    \item --epoch by default is 100. Is epoch number.
-    \item --batchsize is training batch size. Depends of users hardware. By default is 24.
-    \item --num\_workers is number of workers in dataloader. Depends of users hardware. By default is 8
-    \item --trainsize is set the size of training sample. This parameter specify the height and width of image in pixels. By default is 352.
-    \item --is\_thop - whether calculate FLOPs/Params (Thop). By default is False.
-    \item --net\_channel is internal channel numbers in the Inf-Net. By default is 32.
-    \item --n\_classes is number of classes to segment. Binary segmentation when 1. By default is 1
-    \item ...
-    \item -h for the full list of parameters
-\end{itemize}
+- --backbone change different backbone. Possible choice: VGGNet16, ResNet50, Res2Net50. By default is Res2Net50
+- --epoch by default is 100. Is epoch number.
+- --batchsize is training batch size. Depends of users hardware. By default is 24.
+- --num_workers is number of workers in dataloader. Depends of users hardware. By default is 8
+- --trainsize is set the size of training sample. This parameter specify the height and width of image in pixels. By default is 352.
+- --is_thop - whether calculate FLOPs/Params (Thop). By default is False.
+- --net_channel is internal channel numbers in the Inf-Net. By default is 32.
+- --n_classes is number of classes to segment. Binary segmentation when 1. By default is 1
+- ...
+- -h for the full list of parameters
+
 
 The weights will be saved in ./Snapshots/save\_weights/Inf-Net/
 
