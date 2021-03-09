@@ -1,8 +1,8 @@
-\section{Usage}
+Usage
 
 This project is made in the form of several scripts, and in order to use different parts of this project, you need to run the scripts separately.
 
-\subsection{Environment (Prerequisites)}
+Environment (Prerequisites)
 
 Inf-Net use environments with CUDA-10.0. It may work with other environment, but is not guarantee.
 
@@ -14,7 +14,7 @@ Installing THOP for counting the FLOPs/Params of model (of necessity).
 
 Some required packages may fail during installation, in which case the user have to find a workaround to install the missing packages.
 
-\subsection{Training Inf-Net}
+Training Inf-Net
 
 Different backbones can be used to train Inf-Net, but only Res2Net was used in this project, and the correct operation of other backbones is not guaranteed.
 
