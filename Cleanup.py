@@ -10,7 +10,7 @@ from PIL import Image
 def inference():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, default='./Results/LungSegmentation/NewPseudo/MontFill',
-                        help='Path to test data')
+                        help='Path to images')
     opt = parser.parse_args()
 
     print("#" * 20, "\nStart Testing (Inf-Net)\n{}\n".format(opt), "#" * 20)
@@ -25,6 +25,8 @@ def inference():
     for gt_path in gts:
         gt = cv2.imread(gt_path, cv2.IMREAD_GRAYSCALE);
 
+        # Holes Filling
+
         seed = np.copy(gt)
         seed[1:-1, 1:-1] = gt.max()
         mask = gt
@@ -34,6 +36,8 @@ def inference():
         new_p = Image.fromarray(img_fill_holes)
         new_p = new_p.convert("L")
         new_p = np.array(new_p)
+
+        # Elimination of extra zones
 
         contours, hierarchy = cv2.findContours(new_p, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         zones = []
@@ -57,7 +61,10 @@ def inference():
             drawing = cv2.drawContours(drawing, [c], 0, color, thickness=cv2.FILLED, lineType=4)
             image = cv2.add(image, drawing)
 
-        cv2.imwrite(gt_path, image)
+        inter = np.logical_and(new_p, image)
+        inter = np.where(inter == True, 255, 0)
+
+        cv2.imwrite(gt_path, inter)
     print("end fill")
 
 
