@@ -8,7 +8,7 @@ import cv2
 def inference():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, default='./Results/LungSegmentation/Inf_Net_Final/Inf_and_Semi_Fill',
-                        help='Path to test data')
+                        help='Path to images')
     opt = parser.parse_args()
 
     print("#" * 20, "\nStart Testing (Inf-Net)\n{}\n".format(opt), "#" * 20)
@@ -45,8 +45,10 @@ def inference():
             drawing = cv2.drawContours(drawing, [c], 0, color, thickness=cv2.FILLED, lineType = 4)
             image = cv2.add(image,drawing)
 
+        inter = np.logical_and(gt, image)
+        inter = np.where(inter == True, 255, 0)
 
-        cv2.imwrite(gt_path, image)
+        cv2.imwrite(gt_path, inter)
 
     print("end fill")
 

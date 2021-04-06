@@ -95,19 +95,22 @@ def trainer(train_loader, model, optimizer, epoch, opt, total_step):
         print('[Saving Snapshot:]', save_path + 'Semi-Inf-Net-%d.pth' % (epoch+1))
 
 
-def train_module(_train_path, _train_save, _resume_snapshot,_batchsize):
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--epoch', type=int, default=10, help='epoch number')
-    parser.add_argument('--lr', type=float, default=3e-4, help='learning rate')
-    parser.add_argument('--batchsize', type=int, default=_batchsize, help='training batch size')
-    parser.add_argument('--trainsize', type=int, default=352, help='training dataset size')
-    parser.add_argument('--clip', type=float, default=0.5, help='gradient clipping margin')
-    parser.add_argument('--decay_rate', type=float, default=0.1, help='decay rate of learning rate')
-    parser.add_argument('--decay_epoch', type=int, default=50, help='every n epochs decay learning rate')
-    parser.add_argument('--train_path', type=str, default=_train_path)
-    parser.add_argument('--train_save', type=str, default=_train_save)
-    parser.add_argument('--resume_snapshot', type=str, default=_resume_snapshot)
-    opt = parser.parse_args()
+def train_module(_opt):
+#def train_module(_train_path, _train_save, _resume_snapshot,_batchsize):
+    #parser = argparse.ArgumentParser()
+    #parser.add_argument('--epoch', type=int, default=10, help='epoch number')
+    #parser.add_argument('--lr', type=float, default=3e-4, help='learning rate')
+    #parser.add_argument('--batchsize', type=int, default=_batchsize, help='training batch size')
+    #parser.add_argument('--trainsize', type=int, default=352, help='training dataset size')
+    #parser.add_argument('--clip', type=float, default=0.5, help='gradient clipping margin')
+    #parser.add_argument('--decay_rate', type=float, default=0.1, help='decay rate of learning rate')
+    #parser.add_argument('--decay_epoch', type=int, default=50, help='every n epochs decay learning rate')
+    #parser.add_argument('--train_path', type=str, default=_train_path)
+    #parser.add_argument('--train_save', type=str, default=_train_save)
+    #parser.add_argument('--resume_snapshot', type=str, default=_resume_snapshot)
+    #opt = parser.parse_args()
+
+    opt = _opt
 
     # ---- build models ----
     torch.cuda.set_device(0)
@@ -189,46 +192,63 @@ def replacefiles(_src_dir, _dst_dir, prev):
 
 
 if __name__ == '__main__':
-    slices = './Dataset/ChineseAsPseudo/ChinaSet_AllFiles/DataPrepare'
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--data_path', type=str, default='./Dataset/Pseudo', help='Path to group of unlabeled dataset')
+    parser.add_argument('--label_path', type=str, default='./Dataset/Pseudo', help='Path to train labeled dataset')
+    parser.add_argument('--epoch', type=int, default=10, help='epoch number')
+    parser.add_argument('--lr', type=float, default=3e-4, help='learning rate')
+    parser.add_argument('--batchsize', type=int, default=6, help='training batch size')
+    parser.add_argument('--trainsize', type=int, default=352, help='training dataset size')
+    parser.add_argument('--clip', type=float, default=0.5, help='gradient clipping margin')
+    parser.add_argument('--decay_rate', type=float, default=0.1, help='decay rate of learning rate')
+    parser.add_argument('--decay_epoch', type=int, default=50, help='every n epochs decay learning rate')
+    parser.add_argument('--train_path', type=str, default='./Dataset/ChineseAsPseudo/ChinaSet_AllFiles/DataPrepare/Training-label')
+    parser.add_argument('--train_save', type=str, default='semi_training/Semi-Inf-Net')
+    parser.add_argument('--resume_snapshot', type=str, default='./Snapshots/save_weights/Inf-Net/Inf-Net-100.pth')
+    opt = parser.parse_args()
+
+    slices = '{}/'.format(opt.data_path)
+    #slices = './Dataset/ChineseAsPseudo/ChinaSet_AllFiles/DataPrepare'
     slices_dir = slices + '/Imgs_splits'
     slices_pred_seg_dir = slices + '/pred_seg_split'
     slices_pred_edge_dir = slices + '/pred_edge_split'
 
     # NOTES: Hybrid-label = Doctor-label + Pseudo-label
-    semi = './Dataset/ChineseAsPseudo/ChinaSet_AllFiles/DataPrepare/Hybrid-label'
+    #semi = './Dataset/ChineseAsPseudo/ChinaSet_AllFiles/DataPrepare/Hybrid-label'
+    semi = slices + '/Hybrid-label'
     semi_img = semi + '/Imgs'
     semi_mask = semi + '/GT'
     semi_edge = semi + '/Edge'
 
-    previus = []
+    previous = []
 
-    trainset = './Dataset/ChineseAsPseudo/ChinaSet_AllFiles/DataPrepare/Training-label'
+    #trainset = './Dataset/ChineseAsPseudo/ChinaSet_AllFiles/DataPrepare/Training-label'
+    trainset = slices + '/Training-label'
     train_img = trainset + '/Imgs'
     train_mask = trainset + '/GT'
     train_edge = trainset + '/Edge'
 
     if (not os.path.exists(semi_img)) or (len(os.listdir(semi_img)) != 50):
-        shutil.copytree('./Dataset/ChineseAsPseudo/Montgomery/Train/Imgs',
+        shutil.copytree('{}/Imgs'.format(opt.label_path),
                         semi_img)
-        shutil.copytree('./Dataset/ChineseAsPseudo/Montgomery/Train/GT',
+        shutil.copytree('{}/GT'.format(opt.label_path),
                         semi_mask)
-        shutil.copytree('./Dataset/ChineseAsPseudo/Montgomery/Train/Edge',
+        shutil.copytree('{}/Edge'.format(opt.label_path),
                         semi_edge)
         print('Copy done')
     else:
         print('Check done')
 
     if (not os.path.exists(train_img)) or (len(os.listdir(train_img)) != 50):
-        shutil.copytree('./Dataset/ChineseAsPseudo/Montgomery/Train/Imgs',
+        shutil.copytree('{}/Imgs'.format(opt.label_path),
                         train_img)
-        shutil.copytree('./Dataset/ChineseAsPseudo/Montgomery/Train/GT',
+        shutil.copytree('{}/GT'.format(opt.label_path),
                         train_mask)
-        shutil.copytree('./Dataset/ChineseAsPseudo/Montgomery/Train/Edge',
+        shutil.copytree('{}/Edge'.format(opt.label_path),
                         train_edge)
         print('Copy done')
     else:
         print('Check done')
-
 
 
     slices_lst = os.listdir(slices_dir)
@@ -262,19 +282,17 @@ if __name__ == '__main__':
         movefiles(test_aux_save_dir, semi_mask)
         movefiles(os.path.join(slices_pred_edge_dir, split_name), semi_edge)
 
-        replacefiles(test_aux_dir, train_img, previus)
-        replacefiles(test_aux_save_dir, train_mask, previus)
-        replacefiles(os.path.join(slices_pred_edge_dir, split_name), train_edge, previus)
+        replacefiles(test_aux_dir, train_img, previous)
+        replacefiles(test_aux_save_dir, train_mask, previous)
+        replacefiles(os.path.join(slices_pred_edge_dir, split_name), train_edge, previous)
 
-
-
+        opt.train_path = trainset
+        opt.train_save = 'semi_training/Semi-Inf-Net_{}'.format(i)
+        opt.resume_snapshot = snapshot_dir
         # ---- training ----
-        train_module(_train_path=trainset,
-                     _train_save='semi_training/Semi-Inf-Net_{}'.format(i),
-                     _resume_snapshot=snapshot_dir,
-                     _batchsize=6)
+        train_module(_opt=opt)
 
-        previus = os.listdir(test_aux_dir)
+        previous = os.listdir(test_aux_dir)
 
     # move img/pseudo-label into `./Dataset/TrainingSet/LungInfection-Train/Pseudo-label`
     # from semi = './Dataset/ChineseAsPseudo/ChinaSet_AllFiles/DataPrepare/Hybrid-label'
@@ -282,7 +300,9 @@ if __name__ == '__main__':
     # can fail if folder Pseudo already exists.
     # Needs modifying following code to add save location from command input
 
-    shutil.copytree(semi_img, './Dataset/ChineseAsPseudo/ChinaSet_AllFiles/Pseudo/Imgs')
-    shutil.copytree(semi_mask, './Dataset/ChineseAsPseudo/ChinaSet_AllFiles/Pseudo/GT')
-    shutil.copytree(semi_edge, './Dataset/ChineseAsPseudo/ChinaSet_AllFiles/Pseudo/Edge')
+    save_path = slices + '/Pseudo'
+    os.makedirs(save_path, exist_ok=True)
+    shutil.copytree(semi_img, save_path + '/Imgs')
+    shutil.copytree(semi_mask, save_path + '/GT')
+    shutil.copytree(semi_edge, save_path + '/Edge')
     print('Pseudo Label Generated!')
